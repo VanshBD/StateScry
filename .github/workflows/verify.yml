@@ -16,7 +16,7 @@ jobs:
       matrix:
         browser: [chromium, firefox, webkit]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Enable pnpm
         run: corepack enable
       - uses: actions/setup-node@v4
