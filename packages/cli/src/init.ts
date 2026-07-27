@@ -6,7 +6,7 @@ import {
   StateScryError,
   validateConfig,
   type StateScryConfig,
-} from "@statescry/core";
+} from "@statescry-tool/core";
 
 export interface ProjectDetection {
   framework: string;

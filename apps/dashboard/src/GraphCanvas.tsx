@@ -1,7 +1,7 @@
 import { memo, useEffect, useImperativeHandle, useRef, type Ref } from "react";
 import cytoscape, { type Core, type ElementDefinition } from "cytoscape";
 
-import type { BehaviorRun, RunAnalysis } from "@statescry/core";
+import type { BehaviorRun, RunAnalysis } from "@statescry-tool/core";
 
 export interface GraphHandle {
   fit: () => void;

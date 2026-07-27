@@ -3,10 +3,10 @@
 StateScry is a local-first TypeScript workspace with four public packages:
 
 ```text
-@statescry/sdk  -> versioned extension types, validation, redaction, worker host
-@statescry/core -> mapping, graph/storage, replay, diff, benchmark, matrix, history
-@statescry/mcp  -> compact stdio tools backed by core
-@statescry/cli  -> commands plus the compiled local dashboard
+@statescry-tool/sdk  -> versioned extension types, validation, redaction, worker host
+@statescry-tool/core -> mapping, graph/storage, replay, diff, benchmark, matrix, history
+@statescry-tool/mcp  -> compact stdio tools backed by core
+@statescry-tool/cli  -> commands plus the compiled local dashboard
 ```
 
 The explorer launches a fresh Playwright context per replay path, enforces origin and

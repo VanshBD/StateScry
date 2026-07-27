@@ -5,7 +5,7 @@ import {
   type ExtensionInspection,
   type ExtensionPageSnapshot,
   type ExtensionRedactorResult,
-} from "@statescry/sdk";
+} from "@statescry-tool/sdk";
 
 import { sha256 } from "./fingerprint.js";
 import type { ActionDescriptor, StateNode } from "./types.js";

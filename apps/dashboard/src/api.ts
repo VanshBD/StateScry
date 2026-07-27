@@ -6,7 +6,7 @@ import type {
   ReplayResult,
   RunAnalysis,
   RunSummary,
-} from "@statescry/core";
+} from "@statescry-tool/core";
 
 async function request<T>(path: string): Promise<T> {
   const response = await fetch(path);

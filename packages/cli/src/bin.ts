@@ -21,13 +21,13 @@ import {
   startDashboardServer,
   type BenchmarkManifest,
   type ReplayResult,
-} from "@statescry/core";
+} from "@statescry-tool/core";
 import { Command, Option } from "commander";
 import {
   inspectExtension,
   invokeExtension,
   type ExtensionCapability,
-} from "@statescry/sdk";
+} from "@statescry-tool/sdk";
 
 import {
   globalOptions,
@@ -646,7 +646,7 @@ program
   .command("mcp")
   .description("Start the StateScry MCP server over stdio.")
   .action(async () => {
-    const { startStateScryMcp } = await import("@statescry/mcp");
+    const { startStateScryMcp } = await import("@statescry-tool/mcp");
     await startStateScryMcp();
   });
 

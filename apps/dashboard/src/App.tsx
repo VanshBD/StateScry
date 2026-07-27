@@ -26,7 +26,7 @@ import type {
   RunAnalysis,
   RunSummary,
   StateNode,
-} from "@statescry/core";
+} from "@statescry-tool/core";
 
 import {
   artifactUrl,

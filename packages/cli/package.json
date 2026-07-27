@@ -1,5 +1,5 @@
 {
-  "name": "@statescry/cli",
+  "name": "@statescry-tool/cli",
   "version": "2.0.0",
   "description": "StateScry command-line interface and local dashboard server.",
   "license": "Apache-2.0",
@@ -29,9 +29,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@statescry/core": "workspace:*",
-    "@statescry/mcp": "workspace:*",
-    "@statescry/sdk": "workspace:*",
+    "@statescry-tool/core": "workspace:*",
+    "@statescry-tool/mcp": "workspace:*",
+    "@statescry-tool/sdk": "workspace:*",
     "commander": "^14.0.0",
     "typescript": "^5.8.3"
   },

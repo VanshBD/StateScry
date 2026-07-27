@@ -33,17 +33,17 @@ await writeFile(
       private: true,
       type: "module",
       dependencies: {
-        "@statescry/sdk": tarball("statescry-sdk-"),
-        "@statescry/core": tarball("statescry-core-"),
-        "@statescry/mcp": tarball("statescry-mcp-"),
-        "@statescry/cli": tarball("statescry-cli-"),
+        "@statescry-tool/sdk": tarball("statescry-sdk-"),
+        "@statescry-tool/core": tarball("statescry-core-"),
+        "@statescry-tool/mcp": tarball("statescry-mcp-"),
+        "@statescry-tool/cli": tarball("statescry-cli-"),
       },
       pnpm: {
         overrides: {
-          "@statescry/sdk": tarball("statescry-sdk-"),
-          "@statescry/core": tarball("statescry-core-"),
-          "@statescry/mcp": tarball("statescry-mcp-"),
-          "@statescry/cli": tarball("statescry-cli-"),
+          "@statescry-tool/sdk": tarball("statescry-sdk-"),
+          "@statescry-tool/core": tarball("statescry-core-"),
+          "@statescry-tool/mcp": tarball("statescry-mcp-"),
+          "@statescry-tool/cli": tarball("statescry-cli-"),
         },
       },
     },
@@ -83,13 +83,13 @@ for (const name of ["sdk", "core", "mcp", "cli"]) {
 }
 const sdk = await import(
   new URL(
-    "./node_modules/@statescry/sdk/dist/index.js",
+    "./node_modules/@statescry-tool/sdk/dist/index.js",
     `file:///${consumer.replaceAll("\\", "/")}/`,
   ).href
 );
 const core = await import(
   new URL(
-    "./node_modules/@statescry/core/dist/index.js",
+    "./node_modules/@statescry-tool/core/dist/index.js",
     `file:///${consumer.replaceAll("\\", "/")}/`,
   ).href
 );

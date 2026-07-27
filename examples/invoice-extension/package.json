@@ -1,5 +1,5 @@
 {
-  "name": "@statescry/example-invoice-extension",
+  "name": "@statescry-tool/example-invoice-extension",
   "version": "2.0.0",
   "private": true,
   "type": "module"

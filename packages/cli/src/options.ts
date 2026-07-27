@@ -7,7 +7,7 @@ import {
   type EvidenceMode,
   type ExplorationMode,
   type IncrementalChangeSet,
-} from "@statescry/core";
+} from "@statescry-tool/core";
 import type { Command } from "commander";
 
 export interface GlobalOptions {

@@ -15,7 +15,7 @@ import {
   runMappingMatrix,
   shortestPath,
   summarizeRun,
-} from "@statescry/core";
+} from "@statescry-tool/core";
 import { z } from "zod";
 
 function text(value: unknown) {
@@ -40,7 +40,7 @@ function text(value: unknown) {
   };
 }
 
-function compactRun(run: import("@statescry/core").BehaviorRun) {
+function compactRun(run: import("@statescry-tool/core").BehaviorRun) {
   return {
     id: run.id,
     name: run.name,

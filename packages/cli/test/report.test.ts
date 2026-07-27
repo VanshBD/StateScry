@@ -3,7 +3,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { resolve } from "node:path";
 import { promisify } from "node:util";
 
-import { saveRun } from "@statescry/core";
+import { saveRun } from "@statescry-tool/core";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { run, state } from "../../core/test/fixtures.js";

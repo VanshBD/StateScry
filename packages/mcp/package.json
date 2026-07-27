@@ -1,5 +1,5 @@
 {
-  "name": "@statescry/mcp",
+  "name": "@statescry-tool/mcp",
   "version": "2.0.0",
   "description": "MCP server exposing StateScry behavioral intelligence to AI agents.",
   "license": "Apache-2.0",
@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.0",
-    "@statescry/core": "workspace:*",
+    "@statescry-tool/core": "workspace:*",
     "zod": "^3.25.76"
   },
   "devDependencies": {

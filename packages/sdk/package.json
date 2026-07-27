@@ -1,5 +1,5 @@
 {
-  "name": "@statescry/sdk",
+  "name": "@statescry-tool/sdk",
   "version": "2.0.0",
   "description": "Versioned extension SDK and isolated host for StateScry.",
   "license": "Apache-2.0",

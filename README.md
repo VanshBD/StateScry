@@ -156,10 +156,10 @@ See [MCP setup](docs/LOCAL_USAGE.md#mcp-compatible-coding-agents).
 
 ### Packages
 
-- `@statescry/core` — exploration, graph/storage, replay, diff, analysis, server, and API
-- `@statescry/cli` — command line and compiled dashboard
-- `@statescry/mcp` — compact stdio MCP server
-- `@statescry/sdk` — extension contracts, validation, redaction, and isolated host
+- `@statescry-tool/core` — exploration, graph/storage, replay, diff, analysis, server, and API
+- `@statescry-tool/cli` — command line and compiled dashboard
+- `@statescry-tool/mcp` — compact stdio MCP server
+- `@statescry-tool/sdk` — extension contracts, validation, redaction, and isolated host
 
 The repository can generate installable tarballs, checksums, a CycloneDX SBOM, and
 local provenance with `pnpm release:build`. Public registry publishing is intentionally

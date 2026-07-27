@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { compareRuns } from "@statescry/core";
+import { compareRuns } from "@statescry-tool/core";
 
 import { run, state } from "../../core/test/fixtures.js";
 import {

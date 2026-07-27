@@ -30,10 +30,10 @@ function run(args) {
 
 run(["build"]);
 for (const name of [
-  "@statescry/sdk",
-  "@statescry/core",
-  "@statescry/mcp",
-  "@statescry/cli",
+  "@statescry-tool/sdk",
+  "@statescry-tool/core",
+  "@statescry-tool/mcp",
+  "@statescry-tool/cli",
 ])
   run(["--filter", name, "pack", "--pack-destination", packageRoot]);
 

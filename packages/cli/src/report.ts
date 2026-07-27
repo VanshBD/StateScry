@@ -3,7 +3,7 @@ import type {
   BehaviorRun,
   ReplayResult,
   RunStats,
-} from "@statescry/core";
+} from "@statescry-tool/core";
 
 export interface BehaviorReportMetadata {
   confidence: {
