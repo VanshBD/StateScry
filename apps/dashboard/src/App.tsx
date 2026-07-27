@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertTriangle,
   Box,
+  Camera,
   ChevronDown,
   Crosshair,
   GitCompareArrows,
@@ -147,10 +148,23 @@ function Inspector({
             alt={`Screenshot of ${state.heading || state.title || state.url}`}
           />
         ) : (
-          <p className="empty-copy">
-            No screenshot was saved. This run used privacy-first metadata
-            evidence.
-          </p>
+          <div className="empty-evidence-card">
+            <Camera size={28} className="empty-icon" />
+            <p className="empty-copy">
+              No static screenshot saved for this state.
+            </p>
+            <span className="empty-hint">
+              Mapped in <code>privacy-first</code> metadata mode.
+            </span>
+            <button
+              type="button"
+              className="capture-btn"
+              onClick={handleReplay}
+              disabled={replaying}
+            >
+              {replaying ? "Replaying & Capturing…" : "📷 Capture Screenshot Now"}
+            </button>
+          </div>
         )}
       </div>
       <nav className="evidence-links" aria-label="Evidence files">

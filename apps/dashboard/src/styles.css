@@ -559,6 +559,62 @@ a:focus-visible {
   object-position: top;
 }
 
+.empty-evidence-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 24px;
+  text-align: center;
+}
+
+.empty-evidence-card .empty-icon {
+  color: var(--muted);
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+
+.empty-evidence-card .empty-copy {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #cbd5e1;
+}
+
+.empty-evidence-card .empty-hint {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.empty-evidence-card .empty-hint code {
+  color: var(--accent);
+  background: rgb(34 197 94 / 12%);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.empty-evidence-card .capture-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--line);
+  color: #fff;
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 550;
+  transition: all 0.15s ease;
+}
+
+.empty-evidence-card .capture-btn:hover:not(:disabled) {
+  background: var(--accent);
+  color: #0b1019;
+  border-color: var(--accent);
+}
+
 .facts {
   margin: 0;
   padding: 0 18px;
