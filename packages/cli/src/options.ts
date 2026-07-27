@@ -15,6 +15,60 @@ export interface GlobalOptions {
   json: boolean;
 }
 
+export function printBanner(jsonMode: boolean): void {
+  if (jsonMode || !process.stdout.isTTY) return;
+  const cyan = "\x1b[36m";
+  const green = "\x1b[32m";
+  const bold = "\x1b[1m";
+  const dim = "\x1b[90m";
+  const reset = "\x1b[0m";
+
+  process.stdout.write(
+    `\n${cyan}┌─────────────────────────────────────────────────────────────┐${reset}\n` +
+      `${cyan}│${reset}  ${bold}${green}🔮 StateScry v2.0.3${reset} ${dim}— Behavioral Memory Engine for Web Apps${reset}   ${cyan}│${reset}\n` +
+      `${cyan}└─────────────────────────────────────────────────────────────┘${reset}\n\n`,
+  );
+}
+
+export function createSpinner(text: string, jsonMode = false) {
+  if (jsonMode || !process.stdout.isTTY) {
+    if (!jsonMode) process.stdout.write(`[statescry] ${text}\n`);
+    return {
+      update(nextText: string) {
+        if (!jsonMode) process.stdout.write(`[statescry] ${nextText}\n`);
+      },
+      stop(finalText?: string) {
+        if (!jsonMode && finalText)
+          process.stdout.write(`[statescry] ${finalText}\n`);
+      },
+    };
+  }
+  const frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
+  let i = 0;
+  let currentText = text;
+  process.stdout.write(`\x1b[?25l\x1b[36m${frames[0]}\x1b[0m ${currentText}`);
+  const timer = setInterval(() => {
+    i = (i + 1) % frames.length;
+    process.stdout.write(`\r\x1b[K\x1b[36m${frames[i]}\x1b[0m ${currentText}`);
+  }, 80);
+
+  return {
+    update(nextText: string) {
+      currentText = nextText;
+      process.stdout.write(
+        `\r\x1b[K\x1b[36m${frames[i]}\x1b[0m ${currentText}`,
+      );
+    },
+    stop(finalText?: string) {
+      clearInterval(timer);
+      process.stdout.write(`\r\x1b[K\x1b[?25h`);
+      if (finalText) {
+        process.stdout.write(`\x1b[32m✔\x1b[0m ${finalText}\n`);
+      }
+    },
+  };
+}
+
 export function output(value: unknown, jsonMode: boolean): void {
   if (jsonMode) {
     process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
@@ -136,14 +190,28 @@ export async function mapOnce(
   } else if (commandOptions.forceFull === true) {
     throw new Error("--force-full requires --incremental-from.");
   }
-  return exploreApplication(
-    options,
-    globals.json
-      ? undefined
-      : (progress) => {
-          process.stderr.write(
-            `[${progress.states} states · ${progress.transitions} edges] ${progress.message}\n`,
-          );
-        },
+  printBanner(globals.json);
+  const spinner = createSpinner(
+    `Exploring ${url} using Playwright…`,
+    globals.json,
   );
+  try {
+    const run = await exploreApplication(
+      options,
+      globals.json
+        ? undefined
+        : (progress) => {
+            spinner.update(
+              `[${progress.states} states · ${progress.transitions} transitions] ${progress.message}`,
+            );
+          },
+    );
+    spinner.stop(
+      `Mapping complete! Discovered ${run.states.length} states & ${run.transitions.length} transitions (${run.id}).`,
+    );
+    return run;
+  } catch (error) {
+    spinner.stop();
+    throw error;
+  }
 }

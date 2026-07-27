@@ -36,6 +36,7 @@ import {
   output,
   parseCsv,
   parseFeature,
+  printBanner,
 } from "./options.js";
 import { initializeProject } from "./init.js";
 import { importPlaywrightJourneys } from "./playwright-import.js";
@@ -631,6 +632,7 @@ program
   .option("--no-open", "do not open a browser")
   .action(async (options, command) => {
     const globals = globalOptions(command);
+    printBanner(globals.json);
     const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
     const publicDirectory = resolve(packageRoot, "public");
     const dashboard = await startDashboardServer({
@@ -638,7 +640,13 @@ program
       publicDirectory,
       port: options.port,
     });
-    process.stdout.write(`StateScry dashboard: ${dashboard.url}\n`);
+    if (!globals.json && process.stdout.isTTY) {
+      process.stdout.write(
+        `\x1b[32m✔\x1b[0m StateScry dashboard running live at: \x1b[1;36m${dashboard.url}\x1b[0m\n`,
+      );
+    } else {
+      process.stdout.write(`StateScry dashboard: ${dashboard.url}\n`);
+    }
     if (options.open) openBrowser(dashboard.url);
   });
 
