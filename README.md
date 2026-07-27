@@ -38,11 +38,7 @@ queried, replayed, compared, and shared with coding agents. It is local-first an
 deterministic core does not require an account, cloud service, paid AI API, or secret
 API key.
 
-StateScry is ready for local development and evaluation from this repository. Its
-source, CLI, dashboard, core API, MCP server, extension SDK, tests, and local release
-artifacts work together. The packages are not yet published to a public registry, and
-hosted release workflows, package ownership, and trademark review remain external
-public-release steps.
+StateScry is published live on npm under the `@statescry-tool` organization (`@statescry-tool/cli`, `@statescry-tool/mcp`, `@statescry-tool/core`, `@statescry-tool/sdk`) and its dashboard is hosted live on Vercel at [statescry.vercel.app](https://statescry.vercel.app).
 
 ## The problem it solves
 
@@ -91,7 +87,29 @@ This helps answer questions such as:
 
 ## Quick start
 
-Requirements: Node.js 24+, Corepack/pnpm, and a Playwright-supported operating system.
+### 🚀 Direct Use via npm / npx (Zero Setup)
+
+You can run StateScry on any web app directly from your terminal using `npx`:
+
+```bash
+# Map any web application
+npx @statescry-tool/cli map https://your-app.com --name baseline --evidence screenshots
+
+# Launch the visual dashboard
+npx @statescry-tool/cli show
+```
+
+Or install it globally:
+
+```bash
+npm install -g @statescry-tool/cli
+statescry map https://your-app.com --name baseline
+statescry show
+```
+
+### 🛠️ From Repository Source
+
+Requirements: Node.js 24+, Corepack/pnpm, and Playwright.
 
 ```bash
 corepack enable
@@ -100,7 +118,7 @@ pnpm exec playwright install chromium
 pnpm build
 ```
 
-Run the included application in one terminal:
+Run the included demo application in one terminal:
 
 ```bash
 pnpm demo
@@ -156,10 +174,10 @@ See [MCP setup](docs/LOCAL_USAGE.md#mcp-compatible-coding-agents).
 
 ### Packages
 
-- `@statescry-tool/core` — exploration, graph/storage, replay, diff, analysis, server, and API
-- `@statescry-tool/cli` — command line and compiled dashboard
-- `@statescry-tool/mcp` — compact stdio MCP server
-- `@statescry-tool/sdk` — extension contracts, validation, redaction, and isolated host
+- [`@statescry-tool/cli`](https://www.npmjs.com/package/@statescry-tool/cli) — command line binary and compiled dashboard
+- [`@statescry-tool/mcp`](https://www.npmjs.com/package/@statescry-tool/mcp) — compact stdio MCP server for AI agents
+- [`@statescry-tool/core`](https://www.npmjs.com/package/@statescry-tool/core) — core exploration engine, graph storage, replay, diff, and server API
+- [`@statescry-tool/sdk`](https://www.npmjs.com/package/@statescry-tool/sdk) — extension contracts, validation, redaction, and isolated host
 
 The repository can generate installable tarballs, checksums, a CycloneDX SBOM, and
 local provenance with `pnpm release:build`. Public registry publishing is intentionally

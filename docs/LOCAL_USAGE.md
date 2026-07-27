@@ -4,8 +4,7 @@ This guide covers every supported local interface: repository CLI, another appli
 dashboard, authenticated personas, multiple browsers and devices, incremental mapping,
 reports and CI, MCP-compatible coding agents, core API, and extensions.
 
-StateScry does not need a cloud account or AI API key. Only package publishing requires
-an npm credential, and publishing is not part of local use.
+StateScry does not need a cloud account or AI API key. Packages are published live on npm under `@statescry-tool`.
 
 ## 1. Prerequisites
 
@@ -386,9 +385,25 @@ Build StateScry first:
 pnpm build
 ```
 
-Register a local stdio server in any MCP client that accepts command, arguments, and
-environment values. This generic configuration works as the model for Codex, Claude,
-and other compatible clients; place the equivalent fields in that client's MCP settings:
+Register the stdio server in any MCP client (Cursor, Claude Desktop, Antigravity, Codex).
+
+### Option A: Using published npm package (`npx`)
+
+```json
+{
+  "mcpServers": {
+    "statescry": {
+      "command": "npx",
+      "args": ["-y", "@statescry-tool/mcp"],
+      "env": {
+        "STATESCRY_PROJECT_ROOT": "C:/path/to/your-web-app"
+      }
+    }
+  }
+}
+```
+
+### Option B: From local built repository
 
 ```json
 {
