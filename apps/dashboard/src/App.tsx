@@ -85,7 +85,9 @@ function Inspector({
   const [replay, setReplay] = useState<ReplayResult | null>(null);
   const [replaying, setReplaying] = useState(false);
   const [replayError, setReplayError] = useState("");
-  const [capturedScreenshot, setCapturedScreenshot] = useState<string | undefined>();
+  const [capturedScreenshot, setCapturedScreenshot] = useState<
+    string | undefined
+  >();
 
   useEffect(() => {
     setReplay(null);
@@ -187,7 +189,9 @@ function Inspector({
                   onClick={handleReplay}
                   disabled={replaying}
                 >
-                  {replaying ? "Replaying & Capturing…" : "📷 Capture Screenshot Now"}
+                  {replaying
+                    ? "Replaying & Capturing…"
+                    : "📷 Capture Screenshot Now"}
                 </button>
               </div>
             )}
@@ -259,71 +263,71 @@ function Inspector({
             <dd className="wrap">{state.url}</dd>
           </div>
         </dl>
-      <section className="journey">
-        <div className="section-title">
-          <Route size={16} />
-          <h3>Shortest known path</h3>
-          <span>{state.path.length} steps</span>
-        </div>
-        {state.path.length === 0 ? (
-          <p className="muted-copy">This is the root state.</p>
-        ) : (
-          <ol>
-            {state.path.map((step, index) => (
-              <li key={`${step.action.id}-${index}`}>
-                <span>{index + 1}</span>
-                <div>
-                  <strong>{step.action.label}</strong>
-                  <code>{step.action.selector}</code>
-                </div>
-              </li>
-            ))}
-          </ol>
-        )}
-      </section>
-      <section className="replay-card" aria-live="polite">
-        <div className="section-title">
-          <Route size={16} />
-          <h3>Verified replay</h3>
-        </div>
-        <button type="button" onClick={handleReplay} disabled={replaying}>
-          {replaying ? "Replaying…" : "Replay this state"}
-        </button>
-        {replay ? (
-          <div className={`replay-result ${replay.status}`}>
-            <strong>
-              {replay.status === "verified" ? "Verified" : "Failed"}
-            </strong>
-            <span>
-              {replay.steps} steps · {replay.mismatches.length} mismatches
-            </span>
-            {replay.mismatches.map((mismatch, index) => (
-              <p key={`${mismatch.field}-${index}`}>{mismatch.message}</p>
-            ))}
-            {replay.diagnostics?.map((diagnostic, index) => (
-              <p key={`${diagnostic.code}-${index}`}>
-                {diagnostic.message}
-                {diagnostic.recommendation
-                  ? ` Recommendation: ${diagnostic.recommendation}`
-                  : ""}
-              </p>
-            ))}
+        <section className="journey">
+          <div className="section-title">
+            <Route size={16} />
+            <h3>Shortest known path</h3>
+            <span>{state.path.length} steps</span>
           </div>
-        ) : null}
-        {replayError ? <p className="replay-error">{replayError}</p> : null}
-      </section>
-      <section className="evidence-grid">
-        <div>
-          <TerminalSquare size={16} />
-          <span>Console</span>
-          <strong>{state.evidence.console.length}</strong>
-        </div>
-        <div>
-          <AlertTriangle size={16} />
-          <span>HTTP errors</span>
-          <strong>{state.evidence.httpErrors.length}</strong>
-        </div>
-      </section>
+          {state.path.length === 0 ? (
+            <p className="muted-copy">This is the root state.</p>
+          ) : (
+            <ol>
+              {state.path.map((step, index) => (
+                <li key={`${step.action.id}-${index}`}>
+                  <span>{index + 1}</span>
+                  <div>
+                    <strong>{step.action.label}</strong>
+                    <code>{step.action.selector}</code>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+        </section>
+        <section className="replay-card" aria-live="polite">
+          <div className="section-title">
+            <Route size={16} />
+            <h3>Verified replay</h3>
+          </div>
+          <button type="button" onClick={handleReplay} disabled={replaying}>
+            {replaying ? "Replaying…" : "Replay this state"}
+          </button>
+          {replay ? (
+            <div className={`replay-result ${replay.status}`}>
+              <strong>
+                {replay.status === "verified" ? "Verified" : "Failed"}
+              </strong>
+              <span>
+                {replay.steps} steps · {replay.mismatches.length} mismatches
+              </span>
+              {replay.mismatches.map((mismatch, index) => (
+                <p key={`${mismatch.field}-${index}`}>{mismatch.message}</p>
+              ))}
+              {replay.diagnostics?.map((diagnostic, index) => (
+                <p key={`${diagnostic.code}-${index}`}>
+                  {diagnostic.message}
+                  {diagnostic.recommendation
+                    ? ` Recommendation: ${diagnostic.recommendation}`
+                    : ""}
+                </p>
+              ))}
+            </div>
+          ) : null}
+          {replayError ? <p className="replay-error">{replayError}</p> : null}
+        </section>
+        <section className="evidence-grid">
+          <div>
+            <TerminalSquare size={16} />
+            <span>Console</span>
+            <strong>{state.evidence.console.length}</strong>
+          </div>
+          <div>
+            <AlertTriangle size={16} />
+            <span>HTTP errors</span>
+            <strong>{state.evidence.httpErrors.length}</strong>
+          </div>
+        </section>
       </div>
     </aside>
   );
