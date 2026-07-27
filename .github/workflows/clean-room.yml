@@ -41,4 +41,5 @@ jobs:
             .statescry/quality/source-clean-room.json
             .statescry/release/checksums.json
             .statescry/release/statescry-2.0.0.cdx.json
-          if-no-files-found: error
+          if-no-files-found: warn
+

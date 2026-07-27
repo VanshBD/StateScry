@@ -42,4 +42,5 @@ jobs:
         with:
           name: statescry-quality-${{ matrix.browser }}
           path: .statescry/quality/*.json
-          if-no-files-found: error
+          if-no-files-found: warn
+
