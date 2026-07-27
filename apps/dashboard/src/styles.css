@@ -73,7 +73,11 @@ a:focus-visible {
 }
 
 .shell {
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .topbar {
@@ -257,13 +261,15 @@ a:focus-visible {
 }
 
 .workspace {
-  height: calc(100vh - 172px);
+  flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  overflow: hidden;
 }
 
 .workspace.with-inspector {
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 390px);
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 420px);
 }
 
 .map-panel {
@@ -510,6 +516,10 @@ a:focus-visible {
 .inspector {
   position: relative;
   z-index: 4;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   border-left: 1px solid var(--line);
   background: var(--panel);
