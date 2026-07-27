@@ -15,19 +15,10 @@ export interface GlobalOptions {
   json: boolean;
 }
 
-export function printBanner(jsonMode: boolean): void {
-  if (jsonMode || !process.stdout.isTTY) return;
-  const cyan = "\x1b[36m";
-  const green = "\x1b[32m";
-  const bold = "\x1b[1m";
-  const dim = "\x1b[90m";
-  const reset = "\x1b[0m";
+import { displayStateScryBanner } from "./banner.js";
 
-  process.stdout.write(
-    `\n${cyan}┌─────────────────────────────────────────────────────────────┐${reset}\n` +
-      `${cyan}│${reset}  ${bold}${green}🔮 StateScry v2.0.3${reset} ${dim}— Behavioral Memory Engine for Web Apps${reset}   ${cyan}│${reset}\n` +
-      `${cyan}└─────────────────────────────────────────────────────────────┘${reset}\n\n`,
-  );
+export async function printBanner(jsonMode: boolean): Promise<void> {
+  await displayStateScryBanner(jsonMode);
 }
 
 export function createSpinner(text: string, jsonMode = false) {

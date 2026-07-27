@@ -632,7 +632,7 @@ program
   .option("--no-open", "do not open a browser")
   .action(async (options, command) => {
     const globals = globalOptions(command);
-    printBanner(globals.json);
+    await printBanner(globals.json);
     const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
     const publicDirectory = resolve(packageRoot, "public");
     const dashboard = await startDashboardServer({
