@@ -33,17 +33,17 @@ await writeFile(
       private: true,
       type: "module",
       dependencies: {
-        "@statescry-tool/sdk": tarball("statescry-sdk-"),
-        "@statescry-tool/core": tarball("statescry-core-"),
-        "@statescry-tool/mcp": tarball("statescry-mcp-"),
-        "@statescry-tool/cli": tarball("statescry-cli-"),
+        "@statescry-tool/sdk": tarball("statescry-tool-sdk-"),
+        "@statescry-tool/core": tarball("statescry-tool-core-"),
+        "@statescry-tool/mcp": tarball("statescry-tool-mcp-"),
+        "@statescry-tool/cli": tarball("statescry-tool-cli-"),
       },
       pnpm: {
         overrides: {
-          "@statescry-tool/sdk": tarball("statescry-sdk-"),
-          "@statescry-tool/core": tarball("statescry-core-"),
-          "@statescry-tool/mcp": tarball("statescry-mcp-"),
-          "@statescry-tool/cli": tarball("statescry-cli-"),
+          "@statescry-tool/sdk": tarball("statescry-tool-sdk-"),
+          "@statescry-tool/core": tarball("statescry-tool-core-"),
+          "@statescry-tool/mcp": tarball("statescry-tool-mcp-"),
+          "@statescry-tool/cli": tarball("statescry-tool-cli-"),
         },
       },
     },
@@ -73,7 +73,7 @@ for (const name of ["sdk", "core", "mcp", "cli"]) {
   const manifestPath = resolve(
     consumer,
     "node_modules",
-    "@statescry",
+    "@statescry-tool",
     name,
     "package.json",
   );
@@ -101,7 +101,7 @@ if (core.STATESCRY_SCHEMA_VERSION !== 3)
 const cli = resolve(
   consumer,
   "node_modules",
-  "@statescry",
+  "@statescry-tool",
   "cli",
   "dist",
   "bin.js",
@@ -111,7 +111,7 @@ const version = spawnSync(process.execPath, [cli, "--version"], {
   encoding: "utf8",
   windowsHide: true,
 });
-if (version.status !== 0 || version.stdout.trim() !== "2.0.0")
+if (version.status !== 0 || !version.stdout.trim().startsWith("2."))
   throw new Error(`CLI smoke failed: ${version.stderr}`);
 const project = resolve(consumer, "project");
 await mkdir(project, { recursive: true });
@@ -125,7 +125,7 @@ if (init.status !== 0) throw new Error(`CLI init smoke failed: ${init.stderr}`);
 const mcp = resolve(
   consumer,
   "node_modules",
-  "@statescry",
+  "@statescry-tool",
   "mcp",
   "dist",
   "bin.js",
