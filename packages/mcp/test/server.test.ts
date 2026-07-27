@@ -207,6 +207,7 @@ describe("StateScry MCP server", () => {
           workers: 1,
           maxStates: 4,
           maxDepth: 2,
+          browser: targetBrowser,
         },
       }),
     ) as { cells: unknown[]; atlas: { nodes: number } };

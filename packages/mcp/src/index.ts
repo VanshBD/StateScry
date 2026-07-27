@@ -162,6 +162,7 @@ export function createStateScryMcpServer(): McpServer {
         "Map a bounded set of configured personas and viewports with safe parallel workers, checkpoints, isolated evidence, and deterministic atlas IDs. Extensions and hooks are not enabled through MCP.",
       inputSchema: {
         url: z.string().url(),
+        browser: z.enum(["chromium", "firefox", "webkit"]).optional(),
         personas: z.array(z.string().min(1)).min(1).max(5),
         viewports: z
           .array(z.enum(["desktop", "tablet", "mobile"]))
@@ -174,36 +175,47 @@ export function createStateScryMcpServer(): McpServer {
       },
     },
     async (input) => {
-      const cells = [];
-      for (const persona of input.personas)
-        for (const viewport of input.viewports)
-          cells.push({
-            key: `${persona}-${viewport}`,
-            options: await resolveExploreOptions({
-              baseUrl: input.url,
-              projectRoot: projectRoot(),
-              persona,
-              viewport,
-              maxStates: input.maxStates,
-              maxDepth: input.maxDepth,
-              name: `${persona}-${viewport}`,
-            }),
-          });
-      const result = await runMappingMatrix(cells, {
-        projectRoot: projectRoot(),
-        maxWorkers: input.workers,
-        resume: input.resume,
-      });
-      return text({
-        sessionId: result.sessionId,
-        checkpointPath: ".statescry/sessions/[session].json",
-        cells: result.runs.map(({ key, run }) => ({ key, ...compactRun(run) })),
-        atlas: {
-          nodes: result.atlas.nodes.length,
-          edges: result.atlas.edges.length,
-        },
-        resumedCells: result.resumedCells,
-      });
+      try {
+        const cells = [];
+        for (const persona of input.personas)
+          for (const viewport of input.viewports)
+            cells.push({
+              key: `${persona}-${viewport}`,
+              options: await resolveExploreOptions({
+                baseUrl: input.url,
+                projectRoot: projectRoot(),
+                ...(input.browser ? { browser: input.browser } : {}),
+                persona,
+                viewport,
+                maxStates: input.maxStates,
+                maxDepth: input.maxDepth,
+                name: `${persona}-${viewport}`,
+              }),
+            });
+        const result = await runMappingMatrix(cells, {
+          projectRoot: projectRoot(),
+          maxWorkers: input.workers,
+          resume: input.resume,
+        });
+        return text({
+          sessionId: result.sessionId,
+          checkpointPath: ".statescry/sessions/[session].json",
+          cells: result.runs.map(({ key, run }) => ({
+            key,
+            ...compactRun(run),
+          })),
+          atlas: {
+            nodes: result.atlas.nodes.length,
+            edges: result.atlas.edges.length,
+          },
+          resumedCells: result.resumedCells,
+        });
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
     },
   );
 
@@ -216,11 +228,18 @@ export function createStateScryMcpServer(): McpServer {
       inputSchema: { limit: z.number().int().min(1).max(100).default(20) },
     },
     async ({ limit }) => {
-      const summaries = (await listRuns(projectRoot())).slice(0, limit);
-      const runs = await Promise.all(
-        summaries.map((summary) => loadRun(projectRoot(), summary.id)),
-      );
-      return text(calculateCoverageHistory(runs));
+      try {
+        const summaries = (await listRuns(projectRoot())).slice(0, limit);
+        const runs = await Promise.all(
+          summaries.map((summary) => loadRun(projectRoot(), summary.id)),
+        );
+        return text(calculateCoverageHistory(runs));
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
     },
   );
 
@@ -232,7 +251,16 @@ export function createStateScryMcpServer(): McpServer {
         "List saved StateScry runs with persona, viewport, state, and transition counts.",
       inputSchema: {},
     },
-    async () => text(await listRuns(projectRoot())),
+    async () => {
+      try {
+        return text(await listRuns(projectRoot()));
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    },
   );
 
   server.registerTool(
@@ -248,27 +276,34 @@ export function createStateScryMcpServer(): McpServer {
       },
     },
     async ({ run: runId, query, limit }) => {
-      const run = await loadRun(projectRoot(), runId);
-      const needle = query.toLowerCase();
-      return text(
-        run.states
-          .filter((state) =>
-            `${state.url} ${state.title} ${state.heading} ${state.textSample}`
-              .toLowerCase()
-              .includes(needle),
-          )
-          .slice(0, limit)
-          .map((state) => ({
-            id: state.id,
-            url: state.url,
-            title: state.title,
-            heading: state.heading,
-            role: state.role,
-            viewport: state.viewport.name,
-            depth: state.depth,
-            coverageStatus: state.coverageStatus,
-          })),
-      );
+      try {
+        const run = await loadRun(projectRoot(), runId);
+        const needle = query.toLowerCase();
+        return text(
+          run.states
+            .filter((state) =>
+              `${state.url} ${state.title} ${state.heading} ${state.textSample}`
+                .toLowerCase()
+                .includes(needle),
+            )
+            .slice(0, limit)
+            .map((state) => ({
+              id: state.id,
+              url: state.url,
+              title: state.title,
+              heading: state.heading,
+              role: state.role,
+              viewport: state.viewport.name,
+              depth: state.depth,
+              coverageStatus: state.coverageStatus,
+            })),
+        );
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
     },
   );
 
@@ -284,8 +319,19 @@ export function createStateScryMcpServer(): McpServer {
       },
     },
     async ({ run: runId, stateId }) => {
-      const run = await loadRun(projectRoot(), runId);
-      return text({ runId: run.id, stateId, path: shortestPath(run, stateId) });
+      try {
+        const run = await loadRun(projectRoot(), runId);
+        return text({
+          runId: run.id,
+          stateId,
+          path: shortestPath(run, stateId),
+        });
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
     },
   );
 
@@ -301,11 +347,11 @@ export function createStateScryMcpServer(): McpServer {
         headed: z.boolean().default(false),
       },
     },
-    async ({ run: runId, stateId, headed }) =>
-      text(
-        await replayState(await loadRun(projectRoot(), runId), stateId, {
-          headless: !headed,
-        }).then((result) => ({
+    async ({ run: runId, stateId, headed }) => {
+      try {
+        const run = await loadRun(projectRoot(), runId);
+        const result = await replayState(run, stateId, { headless: !headed });
+        return text({
           status: result.status,
           requestedStateId: result.requestedStateId,
           finalUrl: result.finalUrl,
@@ -315,8 +361,14 @@ export function createStateScryMcpServer(): McpServer {
           mismatches: result.mismatches,
           diagnostics: result.diagnostics,
           evidenceAvailable: Boolean(result.evidence),
-        })),
-      ),
+        });
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    },
   );
 
   server.registerTool(
@@ -331,11 +383,18 @@ export function createStateScryMcpServer(): McpServer {
       },
     },
     async ({ before, after }) => {
-      const [beforeRun, afterRun] = await Promise.all([
-        loadRun(projectRoot(), before),
-        loadRun(projectRoot(), after),
-      ]);
-      return text(compareRuns(beforeRun, afterRun));
+      try {
+        const [beforeRun, afterRun] = await Promise.all([
+          loadRun(projectRoot(), before),
+          loadRun(projectRoot(), after),
+        ]);
+        return text(compareRuns(beforeRun, afterRun));
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
     },
   );
 
@@ -347,8 +406,16 @@ export function createStateScryMcpServer(): McpServer {
         "Report evidence-qualified terminal states, exploration limits, cycles, blocked actions, and probable permission risks. It does not claim black-box states are unreachable.",
       inputSchema: { run: z.string().min(1) },
     },
-    async ({ run: runId }) =>
-      text(analyzeRun(await loadRun(projectRoot(), runId))),
+    async ({ run: runId }) => {
+      try {
+        return text(analyzeRun(await loadRun(projectRoot(), runId)));
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    },
   );
 
   server.registerTool(
@@ -363,11 +430,18 @@ export function createStateScryMcpServer(): McpServer {
       },
     },
     async ({ lessPrivilegedRun, privilegedRun }) => {
-      const [less, privileged] = await Promise.all([
-        loadRun(projectRoot(), lessPrivilegedRun),
-        loadRun(projectRoot(), privilegedRun),
-      ]);
-      return text(compareRoleAccess(less, privileged));
+      try {
+        const [less, privileged] = await Promise.all([
+          loadRun(projectRoot(), lessPrivilegedRun),
+          loadRun(projectRoot(), privilegedRun),
+        ]);
+        return text(compareRoleAccess(less, privileged));
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
     },
   );
 
@@ -383,25 +457,32 @@ export function createStateScryMcpServer(): McpServer {
       },
     },
     async ({ run: runId, stateId }) => {
-      const run = await loadRun(projectRoot(), runId);
-      const state = run.states.find((candidate) => candidate.id === stateId);
-      return text(
-        state
-          ? {
-              runId: run.id,
-              stateId: state.id,
-              url: state.url,
-              title: state.title,
-              heading: state.heading,
-              persona: state.persona,
-              role: state.role,
-              viewport: state.viewport,
-              featureContext: state.featureContext,
-              path: shortestPath(run, state.id),
-              evidence: state.evidence,
-            }
-          : { error: `State ${stateId} was not found in ${run.id}.` },
-      );
+      try {
+        const run = await loadRun(projectRoot(), runId);
+        const state = run.states.find((candidate) => candidate.id === stateId);
+        return text(
+          state
+            ? {
+                runId: run.id,
+                stateId: state.id,
+                url: state.url,
+                title: state.title,
+                heading: state.heading,
+                persona: state.persona,
+                role: state.role,
+                viewport: state.viewport,
+                featureContext: state.featureContext,
+                path: shortestPath(run, state.id),
+                evidence: state.evidence,
+              }
+            : { error: `State ${stateId} was not found in ${run.id}.` },
+        );
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
     },
   );
 
