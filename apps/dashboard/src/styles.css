@@ -520,9 +520,25 @@ a:focus-visible {
   max-height: 100%;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   border-left: 1px solid var(--line);
   background: var(--panel);
+}
+
+.inspector::-webkit-scrollbar {
+  width: 6px;
+}
+
+.inspector::-webkit-scrollbar-track {
+  background: rgba(11, 16, 25, 0.4);
+}
+
+.inspector::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+.inspector::-webkit-scrollbar-thumb:hover {
+  background: #334155;
 }
 
 .inspector-header {
@@ -533,7 +549,7 @@ a:focus-visible {
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  padding: 20px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--line-soft);
   background: rgb(16 23 34 / 94%);
   backdrop-filter: blur(12px);
@@ -541,23 +557,75 @@ a:focus-visible {
 
 .inspector-header h2 {
   margin: 0;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.3;
 }
 
 .inspector-header .icon-button {
   flex: 0 0 auto;
-  margin: -8px -8px 0 0;
+  margin: -4px -4px 0 0;
   border: 0;
   border-radius: 8px;
 }
 
+.inspector-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 24px;
+}
+
+.browser-mockup {
+  margin: 16px 18px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #080c12;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.browser-mockup-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #101722;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.browser-mockup-bar .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.browser-mockup-bar .dot.red {
+  background: #ef4444;
+}
+
+.browser-mockup-bar .dot.yellow {
+  background: #f59e0b;
+}
+
+.browser-mockup-bar .dot.green {
+  background: #10b981;
+}
+
+.browser-mockup-bar .url-badge {
+  margin-left: 6px;
+  font-size: 10px;
+  color: #64748b;
+  font-family: var(--mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .screenshot-frame {
-  margin: 18px;
+  margin: 0;
   overflow: hidden;
   aspect-ratio: 16 / 10;
-  border: 1px solid var(--line);
-  border-radius: 8px;
+  border: 0;
+  border-radius: 0;
   background: #080c12;
 }
 
@@ -625,28 +693,97 @@ a:focus-visible {
   border-color: var(--accent);
 }
 
+.evidence-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px 16px;
+  flex-wrap: wrap;
+}
+
+.evidence-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(30, 41, 59, 0.5);
+  color: var(--accent);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.evidence-tab:hover {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: var(--accent);
+  color: #86efac;
+}
+
+.evidence-tab .ext-icon {
+  opacity: 0.6;
+}
+
 .facts {
   margin: 0;
   padding: 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .facts > div {
   display: grid;
   grid-template-columns: 76px 1fr;
+  align-items: center;
   gap: 10px;
-  padding: 9px 0;
-  border-bottom: 1px solid var(--line-soft);
+  padding: 8px 12px;
+  background: rgba(16, 23, 34, 0.6);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
 }
 
 .facts dt {
   color: var(--muted);
   font-size: 11px;
+  font-weight: 500;
 }
 
 .facts dd {
   margin: 0;
   color: #d7e0eb;
   font: 11px/1.5 var(--mono);
+}
+
+.state-badge {
+  font-size: 10px;
+  color: #a7f3d0;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.role-pill {
+  font-size: 10px;
+  font-weight: 600;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  padding: 2px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  text-transform: lowercase;
+}
+
+.viewport-pill {
+  font-size: 10px;
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .facts .wrap {

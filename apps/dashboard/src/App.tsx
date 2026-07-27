@@ -5,6 +5,8 @@ import {
   Camera,
   ChevronDown,
   Crosshair,
+  ExternalLink,
+  FileText,
   GitCompareArrows,
   LoaderCircle,
   Maximize2,
@@ -125,108 +127,138 @@ function Inspector({
           <X size={18} />
         </button>
       </header>
-      <div
-        className={`screenshot-frame ${comparisonState ? "visual-diff" : ""}`}
-      >
-        {comparisonRun && comparisonState ? (
-          <>
-            <figure>
-              <figcaption>Baseline</figcaption>
-              {comparisonState.evidence.screenshotPath ? (
-                <img
-                  src={artifactUrl(
-                    comparisonRun.id,
-                    comparisonState.evidence.screenshotPath,
-                  )}
-                  alt={`Baseline screenshot of ${comparisonState.heading || comparisonState.title || comparisonState.url}`}
-                />
-              ) : (
-                <p className="empty-copy">No baseline screenshot.</p>
-              )}
-            </figure>
-            <figure>
-              <figcaption>Current</figcaption>
-              {activeScreenshot ? (
-                <img
-                  src={artifactUrl(run.id, activeScreenshot)}
-                  alt={`Current screenshot of ${state.heading || state.title || state.url}`}
-                />
-              ) : (
-                <p className="empty-copy">No current screenshot.</p>
-              )}
-            </figure>
-          </>
-        ) : activeScreenshot ? (
-          <img
-            src={artifactUrl(run.id, activeScreenshot)}
-            alt={`Screenshot of ${state.heading || state.title || state.url}`}
-          />
-        ) : (
-          <div className="empty-evidence-card">
-            <Camera size={28} className="empty-icon" />
-            <p className="empty-copy">
-              No static screenshot saved for this state.
-            </p>
-            <span className="empty-hint">
-              Mapped in <code>privacy-first</code> metadata mode.
-            </span>
-            <button
-              type="button"
-              className="capture-btn"
-              onClick={handleReplay}
-              disabled={replaying}
-            >
-              {replaying ? "Replaying & Capturing…" : "📷 Capture Screenshot Now"}
-            </button>
+
+      <div className="inspector-content">
+        <div className="browser-mockup">
+          <div className="browser-mockup-bar">
+            <span className="dot red" />
+            <span className="dot yellow" />
+            <span className="dot green" />
+            <span className="url-badge">{state.url}</span>
           </div>
-        )}
-      </div>
-      <nav className="evidence-links" aria-label="Evidence files">
-        {state.evidence.screenshotPath ? (
-          <a
-            href={artifactUrl(run.id, state.evidence.screenshotPath)}
-            target="_blank"
-            rel="noreferrer"
+          <div
+            className={`screenshot-frame ${comparisonState ? "visual-diff" : ""}`}
           >
-            Screenshot
-          </a>
-        ) : null}
-        {state.evidence.accessibilityPath ? (
-          <a
-            href={artifactUrl(run.id, state.evidence.accessibilityPath)}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Accessibility snapshot
-          </a>
-        ) : null}
-        {state.evidence.tracePath ? (
-          <a href={artifactUrl(run.id, state.evidence.tracePath)} download>
-            Trace
-          </a>
-        ) : null}
-      </nav>
-      <dl className="facts">
-        <div>
-          <dt>State ID</dt>
-          <dd>{state.id}</dd>
+            {comparisonRun && comparisonState ? (
+              <>
+                <figure>
+                  <figcaption>Baseline</figcaption>
+                  {comparisonState.evidence.screenshotPath ? (
+                    <img
+                      src={artifactUrl(
+                        comparisonRun.id,
+                        comparisonState.evidence.screenshotPath,
+                      )}
+                      alt={`Baseline screenshot of ${comparisonState.heading || comparisonState.title || comparisonState.url}`}
+                    />
+                  ) : (
+                    <p className="empty-copy">No baseline screenshot.</p>
+                  )}
+                </figure>
+                <figure>
+                  <figcaption>Current</figcaption>
+                  {activeScreenshot ? (
+                    <img
+                      src={artifactUrl(run.id, activeScreenshot)}
+                      alt={`Current screenshot of ${state.heading || state.title || state.url}`}
+                    />
+                  ) : (
+                    <p className="empty-copy">No current screenshot.</p>
+                  )}
+                </figure>
+              </>
+            ) : activeScreenshot ? (
+              <img
+                src={artifactUrl(run.id, activeScreenshot)}
+                alt={`Screenshot of ${state.heading || state.title || state.url}`}
+              />
+            ) : (
+              <div className="empty-evidence-card">
+                <Camera size={28} className="empty-icon" />
+                <p className="empty-copy">
+                  No static screenshot saved for this state.
+                </p>
+                <span className="empty-hint">
+                  Mapped in <code>privacy-first</code> metadata mode.
+                </span>
+                <button
+                  type="button"
+                  className="capture-btn"
+                  onClick={handleReplay}
+                  disabled={replaying}
+                >
+                  {replaying ? "Replaying & Capturing…" : "📷 Capture Screenshot Now"}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-        <div>
-          <dt>Role</dt>
-          <dd>{state.role}</dd>
-        </div>
-        <div>
-          <dt>Viewport</dt>
-          <dd>
-            {state.viewport.name} · {state.viewport.width}×
-            {state.viewport.height}
-          </dd>
-        </div>
-        <div>
-          <dt>URL</dt>
-          <dd className="wrap">{state.url}</dd>
-        </div>
-      </dl>
+
+        <nav className="evidence-links" aria-label="Evidence files">
+          {activeScreenshot ? (
+            <a
+              href={artifactUrl(run.id, activeScreenshot)}
+              target="_blank"
+              rel="noreferrer"
+              className="evidence-tab"
+            >
+              <Camera size={13} />
+              <span>Screenshot</span>
+              <ExternalLink size={11} className="ext-icon" />
+            </a>
+          ) : null}
+          {state.evidence.accessibilityPath ? (
+            <a
+              href={artifactUrl(run.id, state.evidence.accessibilityPath)}
+              target="_blank"
+              rel="noreferrer"
+              className="evidence-tab"
+            >
+              <FileText size={13} />
+              <span>Accessibility</span>
+              <ExternalLink size={11} className="ext-icon" />
+            </a>
+          ) : null}
+          {state.evidence.tracePath ? (
+            <a
+              href={artifactUrl(run.id, state.evidence.tracePath)}
+              download
+              className="evidence-tab"
+            >
+              <Route size={13} />
+              <span>Trace</span>
+              <ExternalLink size={11} className="ext-icon" />
+            </a>
+          ) : null}
+        </nav>
+
+        <dl className="facts">
+          <div>
+            <dt>State ID</dt>
+            <dd>
+              <code className="state-badge">{state.id}</code>
+            </dd>
+          </div>
+          <div>
+            <dt>Role</dt>
+            <dd>
+              <span className="role-pill">{state.role}</span>
+            </dd>
+          </div>
+          <div>
+            <dt>Viewport</dt>
+            <dd>
+              <span className="viewport-pill">
+                {state.viewport.name} · {state.viewport.width}×
+                {state.viewport.height}
+              </span>
+            </dd>
+          </div>
+          <div>
+            <dt>URL</dt>
+            <dd className="wrap">{state.url}</dd>
+          </div>
+        </dl>
       <section className="journey">
         <div className="section-title">
           <Route size={16} />
@@ -292,6 +324,7 @@ function Inspector({
           <strong>{state.evidence.httpErrors.length}</strong>
         </div>
       </section>
+      </div>
     </aside>
   );
 }
