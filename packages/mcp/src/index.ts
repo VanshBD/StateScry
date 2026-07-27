@@ -76,6 +76,7 @@ export function createStateScryMcpServer(): McpServer {
       inputSchema: {
         url: z.string().url(),
         name: z.string().min(1).optional(),
+        browser: z.enum(["chromium", "firefox", "webkit"]).optional(),
         persona: z.string().min(1).default("default"),
         role: z.string().min(1).default("anonymous"),
         storageStatePath: z.string().optional(),
@@ -99,49 +100,57 @@ export function createStateScryMcpServer(): McpServer {
       },
     },
     async (input) => {
-      const options = await resolveExploreOptions({
-        baseUrl: input.url,
-        projectRoot: projectRoot(),
-        ...(input.name ? { name: input.name } : {}),
-        persona: input.persona,
-        role: input.role,
-        ...(input.storageStatePath
-          ? { storageStatePath: input.storageStatePath }
-          : {}),
-        viewport: input.viewport,
-        ...(input.width ? { width: input.width } : {}),
-        ...(input.height ? { height: input.height } : {}),
-        maxStates: input.maxStates,
-        maxDepth: input.maxDepth,
-        evidenceMode: input.evidenceMode,
-        explorationMode: input.explorationMode,
-        environment: input.environment,
-        featureContext: input.featureContext,
-      });
-      if (input.incrementalFrom) {
-        options.incremental = {
-          priorRun: await loadRun(projectRoot(), input.incrementalFrom),
-          changes: {
-            ...(input.changedRoutes.length > 0
-              ? { routes: input.changedRoutes }
-              : {}),
-            ...(input.changedSelectors.length > 0
-              ? { selectors: input.changedSelectors }
-              : {}),
-            ...(input.changedFiles.length > 0
-              ? { files: input.changedFiles }
-              : {}),
-            ...(input.changeReason ? { reason: input.changeReason } : {}),
-          },
-          ...(input.forceFull ? { forceFull: true } : {}),
-        };
-      } else if (input.forceFull) {
-        throw new Error("forceFull requires incrementalFrom.");
+      try {
+        const options = await resolveExploreOptions({
+          baseUrl: input.url,
+          projectRoot: projectRoot(),
+          ...(input.name ? { name: input.name } : {}),
+          ...(input.browser ? { browser: input.browser } : {}),
+          persona: input.persona,
+          role: input.role,
+          ...(input.storageStatePath
+            ? { storageStatePath: input.storageStatePath }
+            : {}),
+          viewport: input.viewport,
+          ...(input.width ? { width: input.width } : {}),
+          ...(input.height ? { height: input.height } : {}),
+          maxStates: input.maxStates,
+          maxDepth: input.maxDepth,
+          evidenceMode: input.evidenceMode,
+          explorationMode: input.explorationMode,
+          environment: input.environment,
+          featureContext: input.featureContext,
+        });
+        if (input.incrementalFrom) {
+          options.incremental = {
+            priorRun: await loadRun(projectRoot(), input.incrementalFrom),
+            changes: {
+              ...(input.changedRoutes.length > 0
+                ? { routes: input.changedRoutes }
+                : {}),
+              ...(input.changedSelectors.length > 0
+                ? { selectors: input.changedSelectors }
+                : {}),
+              ...(input.changedFiles.length > 0
+                ? { files: input.changedFiles }
+                : {}),
+              ...(input.changeReason ? { reason: input.changeReason } : {}),
+            },
+            ...(input.forceFull ? { forceFull: true } : {}),
+          };
+        } else if (input.forceFull) {
+          throw new Error("forceFull requires incrementalFrom.");
+        }
+        const run = await exploreApplication(options, (progress) => {
+          process.stderr.write(`[statescry] ${progress.message}\n`);
+        });
+        return text(compactRun(run));
+      } catch (error) {
+        return text({
+          isError: true,
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
-      const run = await exploreApplication(options, (progress) => {
-        process.stderr.write(`[statescry] ${progress.message}\n`);
-      });
-      return text(compactRun(run));
     },
   );
 

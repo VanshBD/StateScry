@@ -113,7 +113,15 @@ describe("StateScry MCP server", () => {
     const mapped = textJson(
       await client.callTool({
         name: "map_application",
-        arguments: { url, name: "mcp-baseline", maxStates: 4, maxDepth: 2 },
+        arguments: {
+          url,
+          name: "mcp-baseline",
+          maxStates: 4,
+          maxDepth: 2,
+          browser:
+            (process.env.STATESCRY_E2E_BROWSER as
+              "chromium" | "firefox" | "webkit" | undefined) ?? "chromium",
+        },
       }),
     ) as { id: string; states: number; coverage: unknown };
     expect(mapped.states).toBeGreaterThanOrEqual(2);
