@@ -25,7 +25,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Install Chromium
-        run: pnpm --filter @statescry/core exec playwright install chromium
+        run: pnpm --filter @statescry-tool/core exec playwright install chromium
       - name: Build final packages and release metadata
         run: pnpm release:build
       - name: Smoke final package tarballs
