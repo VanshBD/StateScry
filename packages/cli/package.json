@@ -1,6 +1,6 @@
 {
   "name": "@statescry-tool/cli",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "StateScry command-line interface and local dashboard server.",
   "license": "Apache-2.0",
   "keywords": [
@@ -14,8 +14,9 @@
   },
   "type": "module",
   "bin": {
-    "statescry-tool": "./dist/bin.js",
-    "statescry": "./dist/bin.js"
+    "cli": "./dist/bin.js",
+    "statescry": "./dist/bin.js",
+    "statescry-tool": "./dist/bin.js"
   },
   "main": "./dist/bin.js",
   "files": [
