@@ -27,6 +27,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Install Playwright browser for local browser integration tests
         run: pnpm --filter @statescry/core exec playwright install --with-deps ${{ matrix.browser }}
+      - name: Build packages
+        run: pnpm build
       - name: Validate configuration
         run: pnpm statescry validate --root .
       - name: Quality gates
