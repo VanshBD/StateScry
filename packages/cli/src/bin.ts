@@ -51,7 +51,7 @@ const program = new Command();
 program
   .name("statescry")
   .description("Map, replay, and compare the behavior of web applications.")
-  .version("2.0.0")
+  .version("2.0.4")
   .option("--root <path>", "project root containing .statescry", process.cwd())
   .option("--json", "emit machine-readable JSON", false);
 

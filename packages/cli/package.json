@@ -1,6 +1,6 @@
 {
   "name": "@statescry-tool/cli",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "StateScry command-line interface and local dashboard server.",
   "license": "Apache-2.0",
   "keywords": [
