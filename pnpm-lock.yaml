@@ -90,14 +90,14 @@ importers:
   packages/cli:
     dependencies:
       "@statescry-tool/core":
-        specifier: workspace:*
-        version: link:../core
+        specifier: ^2.0.10
+        version: 2.0.11
       "@statescry-tool/mcp":
-        specifier: workspace:*
-        version: link:../mcp
+        specifier: ^2.0.10
+        version: 2.0.11
       "@statescry-tool/sdk":
-        specifier: workspace:*
-        version: link:../sdk
+        specifier: ^2.0.10
+        version: 2.0.11
       commander:
         specifier: ^14.0.0
         version: 14.0.3
@@ -112,8 +112,8 @@ importers:
   packages/core:
     dependencies:
       "@statescry-tool/sdk":
-        specifier: workspace:*
-        version: link:../sdk
+        specifier: ^2.0.11
+        version: 2.0.11
       playwright:
         specifier: ^1.54.1
         version: 1.61.1
@@ -131,8 +131,8 @@ importers:
         specifier: ^1.17.0
         version: 1.29.0(zod@3.25.76)
       "@statescry-tool/core":
-        specifier: workspace:*
-        version: link:../core
+        specifier: ^2.0.11
+        version: 2.0.11
       zod:
         specifier: ^3.25.76
         version: 3.25.76
@@ -779,6 +779,28 @@ packages:
       }
     cpu: [x64]
     os: [win32]
+
+  "@statescry-tool/core@2.0.11":
+    resolution:
+      {
+        integrity: sha512-5hxAD4v/3EK2rPzvimkIvZzJxqLutPzeKBDv5SmJLiesXnOijzFTTMcwjcsqoLWoVwRX3mRdS7JIS38/0wrbpQ==,
+      }
+    engines: { node: ">=24" }
+
+  "@statescry-tool/mcp@2.0.11":
+    resolution:
+      {
+        integrity: sha512-z7lYnrJkpVM5gA0wkZnC+9sjDB4TjV2j+gzKZpLzKUw6clXjFAfhdkMSCAdCH9vbWTwfULoX0bda2ykEMUUpUg==,
+      }
+    engines: { node: ">=24" }
+    hasBin: true
+
+  "@statescry-tool/sdk@2.0.11":
+    resolution:
+      {
+        integrity: sha512-v2NOdLMonHNmmbCYwj6FHefppYYshs3FauiUJ9d+ezAKy3rrBzITlAM/DwwIAx+cdXJBXdcXPRHwv8Hbc1PfmQ==,
+      }
+    engines: { node: ">=24" }
 
   "@types/babel__core@7.20.5":
     resolution:
@@ -2369,6 +2391,22 @@ snapshots:
 
   "@rollup/rollup-win32-x64-msvc@4.62.2":
     optional: true
+
+  "@statescry-tool/core@2.0.11":
+    dependencies:
+      "@statescry-tool/sdk": 2.0.11
+      playwright: 1.61.1
+
+  "@statescry-tool/mcp@2.0.11":
+    dependencies:
+      "@modelcontextprotocol/sdk": 1.29.0(zod@3.25.76)
+      "@statescry-tool/core": 2.0.11
+      zod: 3.25.76
+    transitivePeerDependencies:
+      - "@cfworker/json-schema"
+      - supports-color
+
+  "@statescry-tool/sdk@2.0.11": {}
 
   "@types/babel__core@7.20.5":
     dependencies:
