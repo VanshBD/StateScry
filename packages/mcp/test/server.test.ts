@@ -110,6 +110,9 @@ describe("StateScry MCP server", () => {
       client.connect(clientTransport),
     ]);
 
+    const targetBrowser = (process.env.STATESCRY_E2E_BROWSER || "chromium") as
+      "chromium" | "firefox" | "webkit";
+
     const mapped = textJson(
       await client.callTool({
         name: "map_application",
@@ -118,9 +121,7 @@ describe("StateScry MCP server", () => {
           name: "mcp-baseline",
           maxStates: 4,
           maxDepth: 2,
-          browser:
-            (process.env.STATESCRY_E2E_BROWSER as
-              "chromium" | "firefox" | "webkit" | undefined) ?? "chromium",
+          browser: targetBrowser,
         },
       }),
     ) as { id: string; states: number; coverage: unknown };
