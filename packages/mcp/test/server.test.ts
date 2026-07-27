@@ -30,8 +30,10 @@ afterEach(async () => {
   );
 });
 
-function textJson(result: { content?: unknown }): unknown {
-  const content = result.content;
+function textJson(result: unknown): unknown {
+  if (!result || typeof result !== "object")
+    throw new Error("MCP result must be an object.");
+  const content = (result as { content?: unknown }).content;
   if (!Array.isArray(content)) throw new Error("MCP result has no content.");
   const block = content[0] as { type?: string; text?: string } | undefined;
   if (block?.type !== "text" || typeof block.text !== "string")
