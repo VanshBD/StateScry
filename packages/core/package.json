@@ -1,6 +1,6 @@
 {
   "name": "@statescry-tool/core",
-  "version": "2.0.4",
+  "version": "2.0.11",
   "description": "StateScry behavioral mapping, replay, analysis, and storage engine.",
   "license": "Apache-2.0",
   "keywords": [
@@ -33,7 +33,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@statescry-tool/sdk": "workspace:*",
+    "@statescry-tool/sdk": "^2.0.11",
     "playwright": "^1.54.1"
   },
   "devDependencies": {

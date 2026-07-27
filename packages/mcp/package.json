@@ -1,13 +1,13 @@
 {
   "name": "@statescry-tool/mcp",
-  "version": "2.0.4",
+  "version": "2.0.11",
   "description": "MCP server exposing StateScry behavioral intelligence to AI agents.",
   "license": "Apache-2.0",
   "keywords": [
     "mcp",
-    "playwright",
-    "behavior-testing",
-    "coding-agents"
+    "ai-agents",
+    "statescry",
+    "behavior-graph"
   ],
   "sideEffects": false,
   "publishConfig": {
@@ -17,6 +17,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
+    "cli": "./dist/bin.js",
+    "mcp": "./dist/bin.js",
     "statescry-mcp": "./dist/bin.js"
   },
   "exports": {
@@ -37,7 +39,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.0",
-    "@statescry-tool/core": "workspace:*",
+    "@statescry-tool/core": "^2.0.11",
     "zod": "^3.25.76"
   },
   "devDependencies": {

@@ -35,7 +35,7 @@ export function renderDirection1(): string {
   return [
     "",
     borderTop,
-    `${v}  ${C.indigoSky}◯${RESET}${C.darkSlate}───►${RESET}${C.brightTeal}◯${RESET}${C.darkSlate}───►${RESET}${C.lensCyan}◯${RESET}   ${C.bold}${C.brightTeal}S T A T E S C R Y${RESET} ${C.subtleDim}v2.0.4${RESET}             ${v}`,
+    `${v}  ${C.indigoSky}◯${RESET}${C.darkSlate}───►${RESET}${C.brightTeal}◯${RESET}${C.darkSlate}───►${RESET}${C.lensCyan}◯${RESET}   ${C.bold}${C.brightTeal}S T A T E S C R Y${RESET} ${C.subtleDim}v2.0.11${RESET}             ${v}`,
     `${v}  ${C.darkSlate}│     ▲     │${RESET}   ${C.subtleDim}👁 Scrying Lens · Behavioral Graph Memory${RESET}  ${v}`,
     `${v} ${C.darkSlate}[S₀]───┴────►[S₁]${RESET}  ${C.emeraldGlow}● Local SQLite Index${RESET}  ${C.indigoSky}● 11 MCP Tools${RESET}    ${v}`,
     borderBot,
@@ -68,7 +68,7 @@ export async function animateDirection2(): Promise<void> {
     ],
     // Frame 3: Materializing Wordmark Lockup
     [
-      ` ${C.indigoSky}◯${RESET}${C.darkSlate}──►${RESET}${C.brightTeal}◯${RESET}${C.darkSlate}──►${RESET}${C.emeraldGlow}◯${RESET}  ${C.bold}${C.brightTeal}S T A T E S C R Y${RESET} ${C.subtleDim}v2.0.4${RESET}`,
+      ` ${C.indigoSky}◯${RESET}${C.darkSlate}──►${RESET}${C.brightTeal}◯${RESET}${C.darkSlate}──►${RESET}${C.emeraldGlow}◯${RESET}  ${C.bold}${C.brightTeal}S T A T E S C R Y${RESET} ${C.subtleDim}v2.0.11${RESET}`,
       ` ${C.subtleDim}👁 Behavioral Memory & Graph Replay Engine${RESET}`,
     ],
   ];
@@ -101,7 +101,7 @@ export async function animateDirection3(): Promise<void> {
 
   process.stdout.write(HIDE_CURSOR);
   process.stdout.write(
-    `\n${C.lensCyan}👁  S T A T E S C R Y${RESET}  ${C.subtleDim}v2.0.4${RESET}\n`,
+    `\n${C.lensCyan}👁  S T A T E S C R Y${RESET}  ${C.subtleDim}v2.0.11${RESET}\n`,
   );
 
   for (let step = 0; step < 8; step++) {
