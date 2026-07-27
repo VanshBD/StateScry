@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.statescry/
+coverage/
+.tmp-statescry-*/
+statescry-dashboard*.png
+*.log
+.env
+.env.*
+!.env.example
+packages/cli/public/

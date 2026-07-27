@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "name": "StateScry checkout benchmark",
+  "description": "Reviewed inventory for a three-state checkout fixture with one planted behavior change.",
+  "states": [
+    { "logicalKey": "home" },
+    { "logicalKey": "checkout", "replayRequired": true },
+    { "logicalKey": "receipt", "replayRequired": true }
+  ],
+  "transitions": [
+    { "source": "home", "target": "checkout" },
+    { "source": "checkout", "target": "receipt" }
+  ],
+  "diff": {
+    "added": ["receipt"],
+    "changed": ["checkout"]
+  },
+  "safety": { "maximumCompletedUnapprovedMutations": 0 },
+  "privacy": { "maximumDetectedSecretLeaks": 0 },
+  "thresholds": {
+    "stateRecall": 0.9,
+    "statePrecision": 0.97,
+    "duplicateRateMaximum": 0.03,
+    "transitionRecall": 0.9,
+    "diffPrecision": 0.95,
+    "diffRecall": 0.9,
+    "replayReliability": 0.95,
+    "safety": 1,
+    "privacy": 1,
+    "overall": 0.9
+  }
+}

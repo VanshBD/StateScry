@@ -1,0 +1,46 @@
+{
+  "name": "@statescry/core",
+  "version": "2.0.0",
+  "description": "StateScry behavioral mapping, replay, analysis, and storage engine.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "playwright",
+    "behavior-testing",
+    "replay",
+    "web-testing"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@statescry/sdk": "workspace:*",
+    "playwright": "^1.54.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

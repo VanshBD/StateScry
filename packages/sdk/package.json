@@ -1,0 +1,38 @@
+{
+  "name": "@statescry/sdk",
+  "version": "2.0.0",
+  "description": "Versioned extension SDK and isolated host for StateScry.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "statescry",
+    "testing",
+    "extensions",
+    "sdk"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

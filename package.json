@@ -1,0 +1,42 @@
+{
+  "name": "statescry",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A local-first behavioral map, replay, and diff engine for web applications.",
+  "type": "module",
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "corepack pnpm -r --if-present build && node scripts/copy-dashboard.mjs",
+    "clean": "corepack pnpm -r --if-present clean",
+    "dev": "corepack pnpm --filter @statescry/dashboard dev",
+    "demo": "corepack pnpm --filter @statescry/demo dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "corepack pnpm --filter @statescry/sdk build && corepack pnpm --filter @statescry/core build && corepack pnpm --filter @statescry/mcp build && corepack pnpm -r --if-present typecheck",
+    "verify": "corepack pnpm format:check && corepack pnpm typecheck && corepack pnpm test && corepack pnpm build && corepack pnpm test:visual",
+    "test:visual": "node scripts/dashboard-visual-qa.mjs",
+    "test:benchmark": "node scripts/incremental-benchmark.mjs",
+    "release:build": "node scripts/build-release.mjs",
+    "release:smoke": "node scripts/smoke-packages.mjs",
+    "release:source-smoke": "node scripts/smoke-source.mjs",
+    "release:verify": "corepack pnpm verify && node scripts/incremental-benchmark.mjs && node scripts/build-release.mjs && node scripts/smoke-packages.mjs && node scripts/smoke-source.mjs",
+    "statescry": "tsx packages/cli/src/bin.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}

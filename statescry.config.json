@@ -1,0 +1,31 @@
+{
+  "browser": "chromium",
+  "headless": true,
+  "maxStates": 100,
+  "maxDepth": 8,
+  "environment": "local",
+  "personas": {
+    "customer": {
+      "role": "customer",
+      "storageStatePath": "examples/demo-app/personas/customer.json"
+    },
+    "admin": {
+      "role": "admin",
+      "storageStatePath": "examples/demo-app/personas/admin.json"
+    }
+  },
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 900
+    },
+    "tablet": {
+      "width": 768,
+      "height": 1024
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844
+    }
+  }
+}

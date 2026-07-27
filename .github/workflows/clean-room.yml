@@ -1,0 +1,44 @@
+name: Clean-room distributions
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  distribution:
+    name: ${{ matrix.os }} clean-room
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install Chromium
+        run: pnpm --filter @statescry/core exec playwright install chromium
+      - name: Build final packages and release metadata
+        run: pnpm release:build
+      - name: Smoke final package tarballs
+        run: pnpm release:smoke
+      - name: Smoke clean source distribution
+        run: pnpm release:source-smoke
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: clean-room-${{ matrix.os }}
+          path: |
+            .statescry/quality/package-clean-room.json
+            .statescry/quality/source-clean-room.json
+            .statescry/release/checksums.json
+            .statescry/release/statescry-2.0.0.cdx.json
+          if-no-files-found: error

@@ -1,0 +1,45 @@
+name: Verify StateScry
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable pnpm
+        run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Playwright browser for local browser integration tests
+        run: pnpm --filter @statescry/core exec playwright install --with-deps ${{ matrix.browser }}
+      - name: Validate configuration
+        run: pnpm statescry validate --root .
+      - name: Quality gates
+        run: pnpm verify
+        env:
+          STATESCRY_E2E_BROWSER: ${{ matrix.browser }}
+      - name: Measured incremental benchmark
+        if: matrix.browser == 'chromium'
+        run: pnpm test:benchmark
+      - name: Upload StateScry quality evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: statescry-quality-${{ matrix.browser }}
+          path: .statescry/quality/*.json
+          if-no-files-found: error

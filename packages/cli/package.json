@@ -1,0 +1,44 @@
+{
+  "name": "@statescry/cli",
+  "version": "2.0.0",
+  "description": "StateScry command-line interface and local dashboard server.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "playwright",
+    "behavior-testing",
+    "cli",
+    "mcp"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "bin": {
+    "statescry": "./dist/bin.js"
+  },
+  "main": "./dist/bin.js",
+  "files": [
+    "dist",
+    "public",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@statescry/core": "workspace:*",
+    "@statescry/mcp": "workspace:*",
+    "@statescry/sdk": "workspace:*",
+    "commander": "^14.0.0",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
