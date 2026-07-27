@@ -83,18 +83,32 @@ function Inspector({
   const [replay, setReplay] = useState<ReplayResult | null>(null);
   const [replaying, setReplaying] = useState(false);
   const [replayError, setReplayError] = useState("");
+  const [capturedScreenshot, setCapturedScreenshot] = useState<string | undefined>();
+
+  useEffect(() => {
+    setReplay(null);
+    setReplayError("");
+    setCapturedScreenshot(undefined);
+  }, [state.id]);
 
   const handleReplay = async () => {
     setReplaying(true);
     setReplayError("");
     try {
-      setReplay(await replayDashboardState(run.id, state.id));
+      const result = await replayDashboardState(run.id, state.id);
+      setReplay(result);
+      if (result.evidence?.screenshotPath) {
+        state.evidence.screenshotPath = result.evidence.screenshotPath;
+        setCapturedScreenshot(result.evidence.screenshotPath);
+      }
     } catch (error) {
       setReplayError(error instanceof Error ? error.message : String(error));
     } finally {
       setReplaying(false);
     }
   };
+
+  const activeScreenshot = capturedScreenshot || state.evidence.screenshotPath;
 
   return (
     <aside className="inspector" aria-label="State evidence">
@@ -132,9 +146,9 @@ function Inspector({
             </figure>
             <figure>
               <figcaption>Current</figcaption>
-              {state.evidence.screenshotPath ? (
+              {activeScreenshot ? (
                 <img
-                  src={artifactUrl(run.id, state.evidence.screenshotPath)}
+                  src={artifactUrl(run.id, activeScreenshot)}
                   alt={`Current screenshot of ${state.heading || state.title || state.url}`}
                 />
               ) : (
@@ -142,9 +156,9 @@ function Inspector({
               )}
             </figure>
           </>
-        ) : state.evidence.screenshotPath ? (
+        ) : activeScreenshot ? (
           <img
-            src={artifactUrl(run.id, state.evidence.screenshotPath)}
+            src={artifactUrl(run.id, activeScreenshot)}
             alt={`Screenshot of ${state.heading || state.title || state.url}`}
           />
         ) : (
